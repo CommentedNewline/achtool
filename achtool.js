@@ -1,4 +1,6 @@
 "use strict";
+var system = require('system');
+var args = system.args;
 
 var page = require('webpage').create(),
     server = 'https://www.brettcharney.com/ouro/ajax/load_chat.php',
