@@ -10,17 +10,16 @@ var headers = {
     "Content-Type": "application/json"
 }
 
-page.onResourceReceived = function(response) {
-if (response.url === server && response.status === 200) {
-    console.log(response.body);
-    page.setContent(response.body)
-    page.render('stage1.png');
-}
-};
-
 page.open(server, 'post', data, headers, function (status) {
     if (status !== 'success') {
         console.log('Unable to post!');
+    } else {
+        page.evaluate(function(response) {
+            document.body.innerHTML = response;
+            console.log('response:')
+            console.log(response)
+        }, page.content);
+        page.render('stage1.png');
     }
     phantom.exit();
 });
