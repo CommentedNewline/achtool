@@ -6,8 +6,9 @@ page.onConsoleMessage = function(msg) {
 };
 console.log('added message event handler')
 
-page.open('https://example.com/', function() {
+page.open('messages.html', function() {
     console.log('page.opened');
+    page.render('opened.png');
     page.includeJs("https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js", function() {
         page.evaluate(function() {
             console.log('evaluating');
@@ -52,13 +53,19 @@ page.open('https://example.com/', function() {
             console.log("Remove HTML comments");
                 var content = document.documentElement.outerHTML;
                 var noComments = content.replace(/<!--(.*?)-->/g, ''); 
-                  
+                document.documentElement.innerHTML = noComments;
+
             console.log("Forming Xml.")
                 $('.p-3.rounded').replaceTag('<text>', false);// create xml
                 $('.fs-5').replaceTag('<sender>', false);
                 $('.text-muted').replaceTag('<time>', false);
                 $('.d-flex.mb-5').replaceTag('<message></messages>');
+
+            console.log("Nuking Leftover HTML");
+                $("div").contents().unwrap(); // delete all divs 
+
             console.log(document.body.innerHTML);
+            page.render('done.png');
     });
     console.log('exiting');
     phantom.exit();
